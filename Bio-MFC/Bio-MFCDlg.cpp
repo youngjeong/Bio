@@ -250,19 +250,15 @@ void CBioMFCDlg::OnBnClickedButton5()
 	/* 닫힘연산(팽창 -> 침식) */
 	IplImage *src = cvLoadImage("binary.jpg", -1);
 	IplImage *dst = cvCloneImage(src);
-
-	cvDilate(src, dst, NULL, 2);
-	cvErode(src, dst, NULL, 2);
+	
+	cvErode(src, dst, NULL, 1);
+	cvDilate(src, dst, NULL, 1);	
 
 	cvNamedWindow("result2", 0);
 	cvShowImage("result2", dst);
-	
 	cvWaitKey(0);
-
 	cvReleaseImage(&dst);
 	cvDestroyWindow("result");
-
-
 
 	/* 변환된 이미지 출력 */
 	//TODO
