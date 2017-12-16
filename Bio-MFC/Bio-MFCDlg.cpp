@@ -6,6 +6,12 @@
 #include "Bio-MFC.h"
 #include "Bio-MFCDlg.h"
 #include "afxdialogex.h"
+#include "opencv2/opencv.hpp"
+#include "highgui.h"
+#include "cv.h"
+#include <iostream>
+
+using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -210,6 +216,7 @@ void CBioMFCDlg::OnBnClickedButton()
 	if (ins_dlg.DoModal() == IDOK) {
 		setButtonImage(m_ImageButton, ins_dlg.GetPathName());
 		m_filePath = ins_dlg.GetPathName();
+		//get filepath to Mat class
 	}
 }
 
