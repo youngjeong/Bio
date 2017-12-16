@@ -228,13 +228,8 @@ void CBioMFCDlg::OnBnClickedButton5()
 	m_pProceed1 = new BYTE[bmp_info.bmWidthBytes * bmp_info.bmHeight * (bmp_info.bmBitsPixel / 8)];
 	memset(m_pProceed1, 0, bmp_info.bmWidthBytes * bmp_info.bmHeight * (bmp_info.bmBitsPixel / 8));
 	GetBitmapBits(proceed1, bmp_info.bmWidthBytes * bmp_info.bmHeight, m_pProceed1);
-	for (int i = 0; i < 50; i++)
-	{
-		for (int j = 0; j < 50; j++)
-		{
-			m_pProceed1[(j + (i*m_nWidthByte))] = 255;
-		}
-	}
+	
+	//TODO : 갯수 카운팅
 
 	//조작된 픽셀을 비트맵에 넣기
 	SetBitmapBits(proceed1, m_Size.cx * m_Size.cy * 3, m_pProceed1);
@@ -257,13 +252,8 @@ void CBioMFCDlg::OnBnClickedButton4()
 	m_pProceed2 = new BYTE[bmp_info.bmWidthBytes * bmp_info.bmHeight * (bmp_info.bmBitsPixel / 8)];
 	memset(m_pProceed2, 0, bmp_info.bmWidthBytes * bmp_info.bmHeight * (bmp_info.bmBitsPixel / 8));
 	GetBitmapBits(proceed2, bmp_info.bmWidthBytes * bmp_info.bmHeight, m_pProceed2);
-	for (int i = 0; i < 50; i++)
-	{
-		for (int j = 0; j < 50; j++)
-		{
-			m_pProceed2[(j + (i*m_nWidthByte))] = 150;
-		}
-	}
+	
+	//TODO : 굵기 측정
 
 	//조작된 픽셀을 비트맵에 넣기
 	SetBitmapBits(proceed2, m_Size.cx * m_Size.cy * 3, m_pProceed2);
