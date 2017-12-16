@@ -216,14 +216,13 @@ void CBioMFCDlg::OnBnClickedButton()
 	if (ins_dlg.DoModal() == IDOK) {
 		setButtonImage(m_ImageButton, ins_dlg.GetPathName());
 		m_filePath = ins_dlg.GetPathName();
-		img = cv::imread((cv::String)(CStringA)m_filePath);
 	}
 }
 
 
 void CBioMFCDlg::OnBnClickedButton5()
 {
-	const int Threshold = 100; // Threshold 설정
+	const int Threshold = 80; // Threshold 설정
 
 	IplImage *image = cvLoadImage(((string)(CStringA)m_filePath).c_str());
 	IplImage *grayimg = 0;
@@ -239,16 +238,31 @@ void CBioMFCDlg::OnBnClickedButton5()
 	cvCvtColor(image, grayimg, CV_RGB2GRAY); // 흑백이미지로 변환
 	cvThreshold(grayimg, outimg, Threshold, 255, CV_THRESH_BINARY); // 이진화
 	outimg->origin = image->origin; // 뒤집어진 방향을 잡아줌
-
+	
+	cvSaveImage("binary.jpg", outimg);
+	
 	cvNamedWindow("result", 0);
 	cvShowImage("result", outimg);
 	cvWaitKey(0);
-
 	cvReleaseImage(&outimg);
+	cvDestroyWindow("result");	
+
+	/* 닫힘연산(팽창 -> 침식) */
+	IplImage *src = cvLoadImage("binary.jpg", -1);
+	IplImage *dst = cvCloneImage(src);
+
+	cvDilate(src, dst, NULL, 2);
+	cvErode(src, dst, NULL, 2);
+
+	cvNamedWindow("result2", 0);
+	cvShowImage("result2", dst);
+	
+	cvWaitKey(0);
+
+	cvReleaseImage(&dst);
 	cvDestroyWindow("result");
 
-	/* 열림연산(침식 -> 팽창) */
-	//TODO
+
 
 	/* 변환된 이미지 출력 */
 	//TODO
