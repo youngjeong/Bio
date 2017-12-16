@@ -216,13 +216,44 @@ void CBioMFCDlg::OnBnClickedButton()
 	if (ins_dlg.DoModal() == IDOK) {
 		setButtonImage(m_ImageButton, ins_dlg.GetPathName());
 		m_filePath = ins_dlg.GetPathName();
-		//get filepath to Mat class
+		img = cv::imread((cv::String)(CStringA)m_filePath);
 	}
 }
 
 
 void CBioMFCDlg::OnBnClickedButton5()
 {
+	const int Threshold = 100; // Threshold 설정
+
+	IplImage *image = cvLoadImage(((string)(CStringA)m_filePath).c_str());
+	IplImage *grayimg = 0;
+	IplImage *outimg = 0;
+
+	/* 이진화 */
+	if (!outimg)
+	{
+		grayimg = cvCreateImage(cvGetSize(image), IPL_DEPTH_8U, 1);
+		outimg = cvCreateImage(cvGetSize(image), IPL_DEPTH_8U, 1);
+	}
+
+	cvCvtColor(image, grayimg, CV_RGB2GRAY); // 흑백이미지로 변환
+	cvThreshold(grayimg, outimg, Threshold, 255, CV_THRESH_BINARY); // 이진화
+	outimg->origin = image->origin; // 뒤집어진 방향을 잡아줌
+
+	cvNamedWindow("result", 0);
+	cvShowImage("result", outimg);
+	cvWaitKey(0);
+
+	cvReleaseImage(&outimg);
+	cvDestroyWindow("result");
+
+	/* 열림연산(침식 -> 팽창) */
+	//TODO
+
+	/* 변환된 이미지 출력 */
+	//TODO
+
+	/*
 	proceed1 = (HBITMAP)LoadImage(NULL, m_filePath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
 
 	BITMAP bmp_info;
@@ -242,6 +273,7 @@ void CBioMFCDlg::OnBnClickedButton5()
 	SetBitmapBits(proceed1, m_Size.cx * m_Size.cy * 3, m_pProceed1);
 	m_proceed1.SetImage(proceed1, TRUE);
 	Invalidate();
+	*/
 }
 
 

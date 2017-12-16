@@ -5,7 +5,10 @@
 #pragma once
 #include "afxwin.h"
 #include "afxbutton.h"
-
+#include "opencv2/opencv.hpp"
+#include "highgui.h"
+#include "cv.h"
+#include <iostream>
 
 // CBioMFCDlg 대화 상자
 class CBioMFCDlg : public CDialogEx
@@ -40,6 +43,7 @@ public:
 	int		m_nWidthByte;
 	HBITMAP original;
 	CString m_filePath;
+	cv::Mat img;
 
 	HBITMAP proceed1;
 	HBITMAP proceed2;
