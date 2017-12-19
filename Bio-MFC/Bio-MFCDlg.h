@@ -55,4 +55,6 @@ public:
 	afx_msg void OnBnClickedButton();
 	afx_msg void OnBnClickedButton5();
 	afx_msg void OnBnClickedButton4();
+	void Thinning(IplImage * input_, int row, int col);
+	int bfs(IplImage * visit, int x, int y);
 };
