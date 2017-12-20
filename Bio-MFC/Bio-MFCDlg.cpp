@@ -226,7 +226,7 @@ void CBioMFCDlg::OnBnClickedButton5()
 	
 	CRect rect;
 	this->GetWindowRect(&rect);
-
+	
 	cvNamedWindow("result", 0);
 	cvResizeWindow("result", rect.Width(), rect.Height());
 	cvMoveWindow("result", rect.left, rect.top);
@@ -234,7 +234,7 @@ void CBioMFCDlg::OnBnClickedButton5()
 	cvWaitKey(0);
 	cvReleaseImage(&outimg);
 	cvDestroyWindow("result");	
-
+	
 	/* 닫힘연산(팽창 -> 침식) */
 	IplImage *src = cvLoadImage("binary.jpg", -1);
 	IplImage *dst = cvCloneImage(src);
@@ -251,11 +251,11 @@ void CBioMFCDlg::OnBnClickedButton5()
 	}
 	dst = cvCloneImage(src);
 
-	cvDilate(src, dst, NULL, 1);
+	cvDilate(src, dst, NULL, 1); // 팽창
 	src = cvCloneImage(dst);
-	cvErode(src, dst, NULL, 3);
+	cvErode(src, dst, NULL, 3); // 침식
 	src = cvCloneImage(dst);
-	cvDilate(src, dst, NULL, 2);
+	cvDilate(src, dst, NULL, 2); // 팽창
 	src = cvCloneImage(dst);
 
 	vector<int> hair;
@@ -273,6 +273,26 @@ void CBioMFCDlg::OnBnClickedButton5()
 			}
 		}
 	}
+
+	cvNamedWindow("result2", 0);
+	cvResizeWindow("result2", rect.Width(), rect.Height());
+	cvMoveWindow("result2", rect.left, rect.top);
+	cvShowImage("result2", dst);
+	cvWaitKey(0);
+	cvReleaseImage(&dst);
+	cvDestroyWindow("result");
+
+
+
+	CString ss;
+	ss.Format(L"%s 입니다!\n모발 수 : %d", hair.size() < 30 ? L"탈모" : L"정상", hair.size());
+
+	
+
+	if(hair.size() < 30)
+		MessageBox(ss, L"결과", MB_ICONQUESTION);
+	else
+		MessageBox(ss, L"결과", MB_ICONQUESTION);
 
 	//Thinning(src, src->width, src->height);
 	//dst = cvCloneImage(src);
@@ -295,13 +315,6 @@ void CBioMFCDlg::OnBnClickedButton5()
 	//src = cvCloneImage(dst);
 	//cvDilate(src, dst, NULL, 5);
 	
-	cvNamedWindow("result2", 0);
-	cvResizeWindow("result2", rect.Width(), rect.Height());
-	cvMoveWindow("result2", rect.left, rect.top);
-	cvShowImage("result2", dst);
-	cvWaitKey(0);
-	cvReleaseImage(&dst);
-	cvDestroyWindow("result");
 
 	/* 변환된 이미지 출력 */
 	//TODO
