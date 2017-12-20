@@ -67,8 +67,6 @@ void CBioMFCDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_BUTTON2, m_ImageButton);
-	DDX_Control(pDX, IDC_BUTTON3, m_proceed1);
-	DDX_Control(pDX, IDC_BUTTON1, m_proceed2);
 }
 
 BEGIN_MESSAGE_MAP(CBioMFCDlg, CDialogEx)
@@ -77,7 +75,6 @@ BEGIN_MESSAGE_MAP(CBioMFCDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON2, &CBioMFCDlg::OnBnClickedButton)
 	ON_BN_CLICKED(IDC_BUTTON5, &CBioMFCDlg::OnBnClickedButton5)
-	ON_BN_CLICKED(IDC_BUTTON4, &CBioMFCDlg::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -86,24 +83,10 @@ END_MESSAGE_MAP()
 BOOL CBioMFCDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-	CFont g_editFont;
 
 	m_ImageButton.m_nFlatStyle = CMFCButton::BUTTONSTYLE_NOBORDERS;
 	m_ImageButton.m_bTransparent = TRUE;
 	m_ImageButton.m_bDrawFocus = FALSE;
-
-	m_proceed1.m_nFlatStyle = CMFCButton::BUTTONSTYLE_NOBORDERS;
-	m_proceed1.m_bTransparent = TRUE;
-	m_proceed1.m_bDrawFocus = FALSE;
-
-	m_proceed2.m_nFlatStyle = CMFCButton::BUTTONSTYLE_NOBORDERS;
-	m_proceed2.m_bTransparent = TRUE;
-	m_proceed2.m_bDrawFocus = FALSE;
-
-	g_editFont.CreatePointFont(200, TEXT("±º∏≤"));
-
-	GetDlgItem(IDC_EDIT1)->SetFont(&g_editFont);
-	GetDlgItem(IDC_EDIT1)->SetWindowTextW(L"≈ª∏¿œ±Óø‰ æ∆¥“±Óø‰?");
 
 	setButtonImage(m_ImageButton, L"../button.png");
 
@@ -241,7 +224,12 @@ void CBioMFCDlg::OnBnClickedButton5()
 	
 	cvSaveImage("binary.jpg", outimg);
 	
+	CRect rect;
+	this->GetWindowRect(&rect);
+
 	cvNamedWindow("result", 0);
+	cvResizeWindow("result", rect.Width(), rect.Height());
+	cvMoveWindow("result", rect.left, rect.top);
 	cvShowImage("result", outimg);
 	cvWaitKey(0);
 	cvReleaseImage(&outimg);
@@ -308,6 +296,8 @@ void CBioMFCDlg::OnBnClickedButton5()
 	//cvDilate(src, dst, NULL, 5);
 	
 	cvNamedWindow("result2", 0);
+	cvResizeWindow("result2", rect.Width(), rect.Height());
+	cvMoveWindow("result2", rect.left, rect.top);
 	cvShowImage("result2", dst);
 	cvWaitKey(0);
 	cvReleaseImage(&dst);
@@ -337,30 +327,6 @@ void CBioMFCDlg::OnBnClickedButton5()
 	m_proceed1.SetImage(proceed1, TRUE);
 	Invalidate();
 	*/
-}
-
-
-void CBioMFCDlg::OnBnClickedButton4()
-{
-	proceed2 = (HBITMAP)LoadImage(NULL, m_filePath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
-
-	BITMAP bmp_info;
-	int err = GetObject(proceed2, sizeof(bmp_info), &bmp_info);
-
-	m_Size.cx = bmp_info.bmWidth;
-	m_Size.cy = bmp_info.bmHeight;
-	m_nWidthByte = bmp_info.bmWidthBytes;
-
-	m_pProceed2 = new BYTE[bmp_info.bmWidthBytes * bmp_info.bmHeight * (bmp_info.bmBitsPixel / 8)];
-	memset(m_pProceed2, 0, bmp_info.bmWidthBytes * bmp_info.bmHeight * (bmp_info.bmBitsPixel / 8));
-	GetBitmapBits(proceed2, bmp_info.bmWidthBytes * bmp_info.bmHeight, m_pProceed2);
-	
-	//TODO : ±Ω±‚ √¯¡§
-
-	//¡∂¿€µ» «»ºø¿ª ∫Ò∆Æ∏ ø° ≥÷±‚
-	SetBitmapBits(proceed2, m_Size.cx * m_Size.cy * 3, m_pProceed2);
-	m_proceed2.SetImage(proceed2, TRUE);
-	Invalidate();
 }
 
 void CBioMFCDlg::Thinning(IplImage * input_, int col, int row)

@@ -45,16 +45,9 @@ public:
 	CString m_filePath;
 	cv::Mat img;
 
-	HBITMAP proceed1;
-	HBITMAP proceed2;
-	CMFCButton m_proceed1;
-	CMFCButton m_proceed2;
-	BYTE* m_pProceed1;
-	BYTE* m_pProceed2;
 	CMFCButton m_ImageButton;
 	afx_msg void OnBnClickedButton();
 	afx_msg void OnBnClickedButton5();
-	afx_msg void OnBnClickedButton4();
 	void Thinning(IplImage * input_, int row, int col);
 	int bfs(IplImage * visit, int x, int y);
 };
